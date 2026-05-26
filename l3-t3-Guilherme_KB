@@ -1,0 +1,39 @@
+#include <stdio.h>
+//crio os structs de cor e retangulo que a nota prcisa
+typedef struct{
+    int r;
+    int g;
+    int b;
+    
+} cor;
+
+typedef struct{
+    int ponto;
+    int tamanho;
+} retangulo;
+
+typedef struct{
+    char texto[100];
+    cor cor;
+    retangulo ret;
+    char etiqueta[3];
+} nota;
+//crio a função para ler o arquivo e retornar uma nota
+int ler_nota( int *arq_nota){
+   *arq_nota = fopen("nota.txt", "r");
+    if(!*arq_nota){
+        printf("não foi possível abrir o arquivo.");
+        return 0;
+    }
+return *arq_nota;
+}
+//crio a função para ler um arquivo e armazenar a nota em um vetor
+int le_grava(int *arq_nota){
+    void vet_grava[100];
+    int a = ler_nota(*arq_nota);
+    
+    for(int i=0; i<100; i++){
+        vet_grava[i] = *arq_nota;
+    }
+
+}

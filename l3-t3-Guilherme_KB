@@ -19,21 +19,27 @@ typedef struct{
     char etiqueta[3];
 } nota;
 //crio a função para ler o arquivo e retornar uma nota
-int ler_nota( int *arq_nota){
+int ler_nota( file *arq_nota){
    *arq_nota = fopen("nota.txt", "r");
     if(!*arq_nota){
         printf("não foi possível abrir o arquivo.");
         return 0;
     }
+    for(;;){
+     fscanf(notas.txt, &arq_nota);
+    }
 return *arq_nota;
 }
 //crio a função para ler um arquivo e armazenar a nota em um vetor
-int le_grava(int *arq_nota){
-    void vet_grava[100];
-    int a = ler_nota(*arq_nota);
-    
+void le_grava(int *arq_nota){
+    int v[100];
+file *arq_nota;
     for(int i=0; i<100; i++){
-        vet_grava[i] = *arq_nota;
+v[i] = ler_nota(arq_nota);
     }
+}
+
+    void vet_grava[100];
+    
 
 }

@@ -1,72 +1,6 @@
 #include <stdio.h>
 #include"tela.h"
 
-//ações do modo principal:
-typedef enum{
-    nota_p_inicio = T_HOME,
-    nota_p_fim = T_END,
-    remove_nota = T_DEL,
-    reinsere_nota = T_INS,
-    cria_nota = 'n',
-    grava_notas = 'g',
-    edita_texto = 'e',
-    texto_busca = 'b',
-    nota_ant = T_CIMA,
-    nota_prox = T_BAIXO,
-    Editar_etiqueta = 't',
-    etiqueta_busca = 'B'
-} principal_et;
-
-//ações do modo de etição de texto
-typedef enum{
-    confirma_edicao = T_ENTER,
-    cancela_edicao = T_ESC,
-    remove_char = T_BS,
-    remove_char_cursor = T_DEL,
-char_ant = T_ESQ,
-char_prox = T_DIR,
-
-} edicao_texto;
-
-//edição da etiqueta
-typedef enum{
-    modo_principal = T_ESC, //Volta para o modo princiapl
-    remove_ult_char = T_BS, //remove o último caractere sendo editado
-    salva_et = T_ENTER, //salva a etiqueta
-    troca_todas_et = ST_ENTER, //troca a etiquetta de todas as notas visíveis e retorna ao modo principal;
-}et_busca;
-//edição do texto de busca
-typedef enum{
-    limpa_texto= T_ESC, //esvazia o texto de busca e cmuda para o modo principal
-modo_principal = T_ENTER, //muda para o modo principal sem limpar o texto
-remove_char = T_BS, // se o cursor não estiver no início, recua o cursor e remove o caractere do cursor;
-remove_char_fim = T_DEL, //se o cursor não estiver no final, remove o caractere do cursor;
-linha_ant = T_CIMA, //move o cursor para a linha anterior;
-linha_prox = T_BAIXO, //Move o cursor para a próxima linha;
-move_inicio = T_HOME, //move o cursor para o início do texto;
-move_fim = T_END //move o cursor para o fim do texto;
-}edicao_etiqueta;
-//edição do texto de busca
-
-typedef enum{
-    limpa_texto = T_ESQ, //esvazia o texto de busca e muda para o modo principal;
-    modo_principal = T_ENTER, //volta para o modo principal sem limpar o texto;
-    remove_char = T_BS, // se o cursor não estiver no início, recua o cursor e remove o caractere do cursor;
-    remove_char_fim = T_DEL, //se o cursor não estiver no final, remove o caractere do cursor;
-    linha_ant = T_CIMA, // move para a linha anterior;
-linha_prox = T_BAIXO, //move para a próxima linha;
-move_inicio = T_HOME, //move o cursor para o início;
-muda_tam= T_END //Altera o  cursor para o tamanho do texto de busca
-}edicao_texto_busca;
-
-//edição da etiqueta de busca
-typedef enum{
-    limpa_texto = T_ESC, //esvazia a etiqueta de busca e muda para o modo principal
-    modo_principal = T_ENTER, //muda para o modo principal sem limpar o texto;
-    remove_char = T_BS, //remove o caractere final da etiqueta de busca, se houver
-
-    
-}
 
 
 //struct cor
@@ -113,6 +47,7 @@ int texto_busca = t_lincol(10, 10);
 printf("texto de busca");
 int etiqueta_busca = t_lincol(15, 15);
 printf("etiqueta de busca");
+printf("\n use as cetas para cima ou para baixo para navegar entre as")
 //cria a struct que vai ter  linha e coluna, as regiões vão ser do tipo struct, vão vir dessa struct
 typedef struct{
     int linha;
@@ -132,13 +67,19 @@ regiao_atual = (regiao_atual+1)%3;
     fflush(stdout);
 }
 }
-
-//lista as notas
-int lista_notas(){
-    if(!abre_arq){
-        return 0;
+//salva as notas no vetor da main, precisa passar por referência
+void salvar(estado *n=vnotas[]){
+    if(!abre_arq()) return 0;
+    while(true){
+        if(eof(f)) break;
+        *n =f;
     }
-    //?
+}
+//lista as notas
+void lista_notas(estado *n =vnotas[]){
+    for(;;){
+        printf("%d", *n);
+    }
 }
 
 
@@ -154,12 +95,113 @@ if(!lista_notas()){
 //edição do texto da nota
 void editar_texto(nota *n){
 char buffer[] = n->texto[];
-
+//fazer um switch para colocar cada comando em uma tecla
+switch(t_tecla){
+    case T_ENTER:
+    n -> texto[] = buffer[];
+    //mudar pro modo principal, descobrir como
+    case T_ESC:
+    //mudar para o modo principal
+    case T_CTRL_C:
+    //modo principal
+    case T_CTRL_B:
+    //se a posição do cursor for maior que 0, subtrai 1 dessa posição e apaga um caractere
+    case T_BS:
+        //se a posição do cursor for maior que 0, subtrai 1 dessa posição e apaga um caractere
+        case T_DEL:
+        //se o cursor estiver em uma posição inferios ao tamanho do texto, remove o caractere na posição do cursor
+        case T_CTRL_D:
+                //se o cursor estiver em uma posição inferios ao tamanho do texto, remove o caractere na posição do cursor
+                case T_CTRL_H:
+                //se a posição do cursor for maior que 0, subtrai 1 dessa posição
+                case T_ESQUERDA:
+                                //se a posição do cursor for maior que 0, subtrai 1 dessa posição
+                                case T_CTRL_L:
+                                //Se a posição do cursor for menor que o tamanho do texto, soma 1 nessa posição
+                                case T_DIREITA:
+                                                                //Se a posição do cursor for menor que o tamanho do texto, soma 1 nessa posição
+}
 
 }
 
+//edição da etiqueta
+void editar_etiqueta(nota *n){
+    char buffer[] = n -> etiqueta[];
+    //switch com os comandos de teclado para esse modo
+    switch(t_tecla){
+        case T_CTRL_C:
+        //modo principal
+        case T_ESC:
+                //modo principal
+                case T_CTRL_D:
+                //remove o o último caractere da etiqueta, se houver
+                case T_ENTER:
+                if(buffer[] ==3){
+n -> etiqueta[] = buffer[];
+//muda para o modo principal
+case T_CTRL_T:
+//se a etiqueta tiver 3 caracteres troca todas as notas para essa etiqueta e muda para o modo principal
+case T_SHIFT_ENTER:
+//se a etiqueta tiver 3 caracteres troca todas as notas para essa etiqueta e muda para o modo principal
+
+                }
+    }
+}
 
 
+//edição do texto de busca
+void editar_texto_busca(nota *n){
+//switch dos atalhos
+switch(t_tecla){
+    case T_CTRL_C:
+    //esvazia o texto de busca e volta para o modo principal
+    case T_ESC:
+        //esvazia o texto de busca e volta para o modo principal
+        case T_ENTER:
+        //muda para o modo principal
+        case T_CTRL_B:
+//se o cursor não estiver no início, recua o cursor e remove 1 caractere
+        case T_BS:
+        //se o cursor não estiver no início, recua o cursor e remove 1 caractere
+        case T_CTRL_D:
+//se o cursor não estiver no final, remova o caractere do cursor
+        case T_DEL:
+        //se o cursor não estiver no final, remova o caractere do cursor
+        case T_CTRL_H:
+//move esq
+case T_ESQ
+//move esq
+        T_CTRL_L:
+        //move dir
+        case T_DIR
+        //move dir
+        case T_CTRL_K:
+        //cursor = 0
+        case T_HOME:
+                //cursor = 0
+                case T_CTRL_J:
+//muda o cursor para o tamanho do texto de busca
+                case T_END:
+                //muda o cursor para o tamanho do texto de busca
+}
+}
+//edição da etiqueta de busca
+void editar_etiqueta_busca(nota *n){
+
+    //switch
+    switch(t_tecla){
+        case T_CTRL_C:
+    //esvazia o texto de busca e volta para o modo principal
+    case T_ESC:
+        //esvazia o texto de busca e volta para o modo principal
+    case T_ENTER:
+    //modo principal
+    case T_CTRL_B:
+//remove o caractere final da etiqueta se houver
+    case T_BS:
+    //remove o caractere final da etiqueta se houver
+    }
+}
 
 //main
 int main(){
@@ -167,8 +209,7 @@ int main(){
 
     typedef struct{
 nota vnotas[];
-int *cursor = vnotas[0];
-    }
+    } estado;
 
 //chama a função que coloca a tela e o teclado em modo cru
 t_inicia();

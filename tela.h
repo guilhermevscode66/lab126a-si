@@ -127,6 +127,7 @@ typedef enum {
   // outras teclas
   T_ENTER,
   T_ALT_ENTER,
+  T_SHIFT_ENTER,
   T_PGUP,
   T_PGDN,
   T_HOME,
